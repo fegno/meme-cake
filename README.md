@@ -1,4 +1,4 @@
-# meme-cake
+# nuxt-app
 
 ## Build Setup
 
