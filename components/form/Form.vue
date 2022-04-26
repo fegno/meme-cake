@@ -2,6 +2,7 @@
   <div class="auth">
     <div class="form">
       <form @submit="login">
+      <div class="overlay" v-if="isLoading"></div>
         <div class="title">
           <h1>Welcome Back</h1>
           <p>
@@ -14,20 +15,18 @@
           <Input
             type="text"
             name="email"
-            label="Username or email"
+            label="Username or email*"
             placeholder="Enter your mail or username"
             :value="email"
             :onChange="onChangeHanlder"
-            required="true"
           />
           <Input
             type="password"
             name="password"
-            label="Password"
+            label="Password*"
             placeholder="Enter your password"
             :value="password"
             :onChange="onChangeHanlder"
-            required="true"
           />
           <div class="block text-right mt-2">
             <NuxtLink to="/reset">Forgot password</NuxtLink>
@@ -52,23 +51,33 @@
   display: block;
   width: 100%;
 }
+.overlay{
+  position  :absolute ;
+  right: 0 ;
+  left : 0 ;
+  top: 0 ;
+  bottom : 0 ;
+  z-index:1 ;
+  background-color : rgba(255,255,255,.5);
+}
 .form {
   display: block;
   width: 100%;
   max-width: 450px;
   margin: 0 auto;
+  position: relative ;
 }
 .form a {
-  color:#000 ;
-  font-weight : 500 ;
+  color: #000;
+  font-weight: 500;
 }
 .form_item {
 }
 .title {
   text-align: left;
 }
-.title p{
-  color:#7e7e7e ;
+.title p {
+  color: #7e7e7e;
 }
 .submit {
   background: linear-gradient(90deg, #8a217e -7.5%, #f85754 115%);
@@ -89,9 +98,10 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 export default {
   data() {
     return {
-      email: "admin@fegno.com",
-      password: "password123",
+      email: "",
+      password: "",
       error: "",
+      isLoading : false 
     };
   },
   computed: {
@@ -110,6 +120,14 @@ export default {
     },
     login(e) {
       e.preventDefault();
+      if (this.isLoading) {
+        return;
+      }
+      if (!this.email || !this.password) {
+        this.error = "Please fill all the required field";
+        return;
+      }
+      this.error = "";
       this.isLoading = true;
       signInWithEmailAndPassword(auth, this.email, this.password)
         .then((res) => {
