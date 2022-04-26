@@ -12,6 +12,7 @@
         @change="onChange"
         @keyup="onChange"
         :value="value"
+        :aria-label="label"
       />
     </div>
   </div>
@@ -20,6 +21,7 @@
 <style scoped>
 .input_block {
   width: 100%;
+  margin-bottom:15px;
 }
 .input_block .label {
   width: 100%;

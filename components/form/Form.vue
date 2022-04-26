@@ -1,7 +1,7 @@
 <template>
   <div class="auth">
     <div class="form">
-      <form>
+      <form @submit="login">
         <div class="title">
           <h1>Welcome Back</h1>
           <p>
@@ -18,6 +18,7 @@
             placeholder="Enter your mail or username"
             :value="email"
             :onChange="onChangeHanlder"
+            required="true"
           />
           <Input
             type="password"
@@ -26,6 +27,7 @@
             placeholder="Enter your password"
             :value="password"
             :onChange="onChangeHanlder"
+            required="true"
           />
           <div class="block text-right mt-2">
             <NuxtLink to="/reset">Forgot password</NuxtLink>
@@ -41,7 +43,6 @@
             <NuxtLink to="/reset">Signup for free</NuxtLink>
           </div>
         </div>
-        <button type="button" v-on:click="login">Login</button>
       </form>
     </div>
   </div>
@@ -57,10 +58,17 @@
   max-width: 450px;
   margin: 0 auto;
 }
+.form a {
+  color:#000 ;
+  font-weight : 500 ;
+}
 .form_item {
 }
 .title {
   text-align: left;
+}
+.title p{
+  color:#7e7e7e ;
 }
 .submit {
   background: linear-gradient(90deg, #8a217e -7.5%, #f85754 115%);
@@ -88,15 +96,20 @@ export default {
   },
   computed: {
     user() {
-      return this.$store.state.user;
+      return this.$store.state.user || null;
     },
   },
   methods: {
     onChangeHanlder(e) {
-      let name = e.target.getAttribute("name");
+      let allowed = ["email", "password"],
+        name = (e.target.getAttribute("name") || "").trim();
+      if (!name || allowed.indexOf(name) === -1) {
+        return;
+      }
       this[name] = e.target.value;
     },
-    login() {
+    login(e) {
+      e.preventDefault();
       this.isLoading = true;
       signInWithEmailAndPassword(auth, this.email, this.password)
         .then((res) => {

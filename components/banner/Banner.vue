@@ -69,5 +69,7 @@
 .banner_image {
   height: 100%;
   align-self: center;
+  width: 100%;
+  object-fit:cover;
 }
 </style>

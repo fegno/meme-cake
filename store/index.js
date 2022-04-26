@@ -1,7 +1,5 @@
 export const state = () => ({
-  user: {
-    name: "Siby",
-  },
+  user:null,
 });
 export const mutations = {
   SIGN_IN(state, user) {

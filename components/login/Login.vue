@@ -4,7 +4,7 @@
       <Banner />
     </div>
     <div class="login_form">
-      <Test />
+      <Form />
     </div>
   </div>
 </template>
@@ -19,7 +19,15 @@
 .login_form {
   display: flex;
 }
+.login_form{
+}
+.banner{
+  flex:auto ;
+  max-width:600px;
+}
 .login_form {
   flex: auto;
+  justify-content: center;
+  align-items: center;
 }
 </style>
